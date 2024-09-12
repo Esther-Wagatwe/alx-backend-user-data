@@ -66,7 +66,7 @@ def get_logger() -> logging.Logger:
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    """"Connection to mysql using environment variables"""
+    """Connection to MySQL using environment variables"""
     db_connect = mysql.connector.connect(
         user=getenv("PERSONAL_DATA_DB_USERNAME", "root"),
         password=getenv("PERSONAL_DATA_DB_PASSWORD", ""),
