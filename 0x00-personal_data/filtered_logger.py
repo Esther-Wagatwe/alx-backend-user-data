@@ -65,7 +65,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> mysql.connector.connection.MYSQLConnection:
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """Connection to MySQL using environment variables"""
     db_connect = mysql.connector.connect(
         user=getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
@@ -74,3 +74,26 @@ def get_db() -> mysql.connector.connection.MYSQLConnection:
         database=getenv('PERSONAL_DATA_DB_NAME')
     )
     return db_connect
+
+
+def main() -> None:
+    """Obtains a database connection using get_db and retrieve all rows in
+    the users table and display each row under a filtered format."""
+    logger = get_logger()
+    logger.setLevel(logging.INFO)
+
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    rows = cursor.fetchall()
+    columns = [desc[0] for desc in cursor.description]
+
+    for row in rows:
+        message = "; ".join([f"{columns[i]}={row[i]}"
+                             for i in range(len(columns))])
+        logger.info(filter_datum(PII_FIELDS, RedactingFormatter.REDACTION,
+                                 message, RedactingFormatter.SEPARATOR))
+
+
+if __name__ == "__main__":
+    main()
