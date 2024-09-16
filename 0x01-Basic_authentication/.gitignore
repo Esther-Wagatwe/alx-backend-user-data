@@ -21,3 +21,6 @@ venv/
 
 # Ignore other unnecessary files
 *.sqlite3
+
+#ignore main file
+main*
