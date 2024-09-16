@@ -2,6 +2,7 @@
 """Authentication module."""
 from flask import request
 from typing import List, TypeVar
+import fnmatch
 
 
 class Auth:
@@ -10,14 +11,30 @@ class Auth:
         """
         Method to determine if authentication is required for a given path.
         """
-        return False
-    
+        if path is None:
+            return True
+
+        if excluded_paths is None or not excluded_paths:
+            return True
+
+        if not path.endswith('/'):
+            path += '/'
+
+        normalized_excluded_paths = [p if p.endswith('/') else p + '/'
+                                     for p in excluded_paths]
+
+        for excluded_path in normalized_excluded_paths:
+            if fnmatch.fnmatch(path, excluded_path):
+                return False
+
+        return True
+
     def authorization_header(self, request=None) -> str:
         """
         Method to retrieve the Authorization header from the request.
         """
         return None
-    
+
     def current_user(self, request=None) -> TypeVar('User'):
         """
         Method to retrieve the current user based on the request.
