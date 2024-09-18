@@ -1,0 +1,26 @@
+# Ignore system files
+.DS_Store
+
+# Ignore Python cache directories
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environment directories (if any)
+env/
+venv/
+
+# Ignore environment variables file
+*.env
+
+# Ignore compiled bytecode
+*.pyc
+*.pyo
+
+# Ignore log files
+*.log
+
+# Ignore other unnecessary files
+*.sqlite3
+
+#ignore main file
+main*
