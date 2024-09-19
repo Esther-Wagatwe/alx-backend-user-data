@@ -23,10 +23,12 @@ class SessionDBAuth(SessionExpAuth):
 
     def user_id_for_session_id(self, session_id=None):
         """Retrieve the user ID from the session stored in the database"""
-        user_id = UserSession.search({"session_id": session_id})
-        if user_id:
-            return user_id
-        return None
+        if session_id is None:
+            return None
+        user_session = UserSession.search({"session_id": session_id})
+        if not user_session:
+            return None
+        return user_session[0].user_id 
 
     def destroy_session(self, request=None):
         """Destroy the user session in the database"""
