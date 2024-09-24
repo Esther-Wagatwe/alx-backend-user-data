@@ -11,12 +11,13 @@ Auth = Auth()
 
 @app.route("/", methods=["GET"], strict_slashes=False)
 def home():
-    """Return message"""
+    """default endpoint"""
     return jsonify({"message": "Bienvenue"})
 
 
 @app.route('/users', methods=["POST"], strict_slashes=False)
 def users():
+    """users endpoint"""
     email = request.form.get("email")
     password = request.form.get("password")
 
@@ -29,6 +30,7 @@ def users():
 
 @app.route('/sessions', methods=["POST"], strict_slashes=False)
 def login():
+    """Login endpont"""
     email = request.form.get("email")
     password = request.form.get("password")
     if not Auth.valid_login(email, password):
