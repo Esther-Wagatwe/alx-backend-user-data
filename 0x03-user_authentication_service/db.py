@@ -4,7 +4,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from sqlalchemy.exc import NoResultFound, InvalidRequestError
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 from typing import Dict
 
 
@@ -51,10 +52,9 @@ class DB:
         Finds a user in the database using arbitrary keyword arguments.
         """
         try:
-            # Query the first user that matches the filter criteria
             user = self._session.query(User).filter_by(**kwargs).one()
-            return user
         except NoResultFound:
-            raise NoResultFound("No user found with the given parameters.")
+            raise NoResultFound()
         except InvalidRequestError:
-            raise InvalidRequestError("Invalid query: please check the filter arguments.")
+            raise InvalidRequestError()
+        return user
