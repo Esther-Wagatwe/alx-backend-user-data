@@ -50,21 +50,11 @@ class DB:
         """
         Finds a user in the database using arbitrary keyword arguments.
         """
-        if not kwargs or not self.valid_query_args(**kwargs):
-            raise InvalidRequestError
-        
-        user = self._session.query(User).filter_by(**kwargs).one()
-
-        if not user:
-            raise NoResultFound
-        else:
+        try:
+            # Query the first user that matches the filter criteria
+            user = self._session.query(User).filter_by(**kwargs).one()
             return user
-
-    def valid_query_args(self, **kwargs):
-        """Get users table columns
-        """
-        columns = User.__table__.columns.keys()
-        for key in kwargs.keys():
-            if key not in columns:
-                return False
-        return True
+        except NoResultFound:
+            raise NoResultFound("No user found with the given parameters.")
+        except InvalidRequestError:
+            raise InvalidRequestError("Invalid query: please check the filter arguments.")
