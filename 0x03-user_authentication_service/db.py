@@ -63,20 +63,10 @@ class DB:
         """
         Updates a user's attributes in the database.
         """
-        if not self.valid_query_args(**kwargs):
-            raise ValueError
-        
         user = self.find_user_by(id=user_id)
 
         for key, value in kwargs.items():
+            if not hasattr(User, key):
+                raise ValueError
             setattr(user, key, value)
         self._session.commit()
-
-    def valid_query_args(self, **kwargs):
-        """Get users table columns
-        """
-        columns = User.__table__.columns.keys()
-        for key in kwargs.keys():
-            if key not in columns:
-                return False
-        return True
