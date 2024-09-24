@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import NoResultFound, InvalidRequestError
+from typing import Dict
 
 
 from user import Base, User
@@ -45,7 +46,7 @@ class DB:
             new_user = None
         return new_user
 
-    def find_user_by(self, **kwargs) -> User:
+    def find_user_by(self, **kwargs: Dict[str, str]) -> User:
         """
         Finds a user in the database using arbitrary keyword arguments.
         """
