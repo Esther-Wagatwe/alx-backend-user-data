@@ -55,6 +55,7 @@ class DB:
             user = self._session.query(User).filter_by(**kwargs).one()
             return user
         except NoResultFound:
-            raise NoResultFound
+            raise NoResultFound("No user found with the given parameters.")
         except InvalidRequestError:
-            raise InvalidRequestError
+            raise InvalidRequestError(
+                "Invalid query: please check the filter arguments.")
